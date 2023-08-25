@@ -1,14 +1,13 @@
 const express = require('express')
 const db = require('./db');
 const app = express()
-const port = 80
-
+const port = 3000
 
 app.use(express.static('public'));
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views','./views');
-
 
 // Function
 validate = (date) => {
@@ -17,7 +16,6 @@ validate = (date) => {
     }
     return date;
 }
-
 
 // Routing
 app.get('/', (req, res) => {
@@ -67,8 +65,20 @@ app.get('/generate_token',(req,res) =>{
 
 });
 
-app.post('/data-api', (req,res) => {
-    
+app.post('/api', (req,res) => {
+    const v = JSON.stringify(req.body,null,2);
+    console.log('Receiving Request' + v);
+    res.status(200).json({
+        "Message" : "Success"
+    });
+});
+
+app.get('/api', (req,res) => {
+    const v = JSON.stringify(req.body,null,2);
+    console.log('Receiving Request' + v);
+    res.status(200).json({
+        "Message" : "Success"
+    });
 });
 
 // Start
