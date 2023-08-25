@@ -1,0 +1,7 @@
+todo : 
+- buat db data
+- validasi token
+- user login
+- user validate
+- jika user sudah memiliki token aktif, maka tampilkan
+- jika tidak, generate token baru
