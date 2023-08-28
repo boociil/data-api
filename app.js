@@ -2,9 +2,10 @@ const express = require('express')
 const db = require('./db');
 const app = express()
 const port = 3000
+const bodyParser = require('body-parser');
 
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views','./views');
@@ -65,21 +66,27 @@ app.get('/generate_token',(req,res) =>{
 
 });
 
-app.post('/api', (req,res) => {
-    const v = JSON.stringify(req.body,null,2);
-    console.log('Receiving Request' + v);
-    res.status(200).json({
-        "Message" : "Success"
-    });
-});
+app.post('/api', function (req, res) {
+    const { token } = req.body;
+    console.log(token);
 
-app.get('/api', (req,res) => {
-    const v = JSON.stringify(req.body,null,2);
-    console.log('Receiving Request' + v);
-    res.status(200).json({
-        "Message" : "Success"
+    db.query("SELECT * FROM `token` WHERE token = '" + token + "'",(err,results) =>{
+        if (err) {
+            res.status(500).json({ error: err });
+            return;
+        }
+
+        if (typeof(results[0]) == []){
+            res.send("Token tidal valid");
+        }
+
+        // const until = results[0].until;
+        // const token = results[0].token;
+
+        res.send(results + 'Gagal');
     });
-});
+    
+})
 
 // Start
 app.listen(port, () => console.log(`Example app listening on port ${port}!, open http://localhost:${port}`))
