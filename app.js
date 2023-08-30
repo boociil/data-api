@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 const bodyParser = require('body-parser');
 
-app.use(express.static('public'));
+app.use(express.static('src/style'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.set('view engine', 'ejs');
@@ -21,6 +21,10 @@ validate = (date) => {
 // Routing
 app.get('/', (req, res) => {
     res.render('index', {title : 'Home'});
+});
+
+app.get('/tailwind', (req,res) => {
+    res.render('tailwind-test', {title : 'Tailwind'})
 });
 
 app.get('/generate_token',(req,res) =>{
@@ -66,6 +70,8 @@ app.get('/generate_token',(req,res) =>{
 
 });
 
+
+//api
 app.post('/api', function (req, res) {
     const { token } = req.body;
     console.log(token);
@@ -79,9 +85,6 @@ app.post('/api', function (req, res) {
         if (typeof(results[0]) == []){
             res.send("Token tidal valid");
         }
-
-        // const until = results[0].until;
-        // const token = results[0].token;
 
         res.send(results + 'Gagal');
     });
